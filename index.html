@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <style>
+        /* board style */
+        .board {
+            display: grid;
+            grid-template-columns: auto;
+            width: fit-content;
+        }
+
+        /* grid styling */
+        .cell {
+            background-color: #eee;
+            border: 1px solid #aaa;
+            width: 10vh;
+            height: 10vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body id="body">
+    <h1>Tic Tac Toe</h1>
+    <button onclick="resetBoard()">reset</button>
+    <button onclick="addEXP()">expand</button>
+    <script>
+
+        let boardSize = 3
+        let currentPlayer = 'X';
+        let cells = [];
+        let wid = boardSize
+        let hei = boardSize
+
+        // Create the board
+        let boar = document.createElement('div');
+        boar.id = "board"
+        boar.className = "board"
+        for (i = 0; i < boardSize; i++) {
+            boar.style.gridTemplateColumns += " auto"
+        }
+        document.getElementById("body").appendChild(boar)
+        let board = document.getElementById("board")
+        let k = 0
+        for (let i = 0; i < boardSize; i++) {
+            for (let j = 0; j < boardSize; j++) {
+                boar.className = "board"
+                let cell = document.createElement('div');
+                cell.classList.add('cell');
+                cell.dataset.row = i;
+                cell.dataset.col = j;
+                cell.id = k
+                cell.addEventListener('click', cellClick);
+                board.appendChild(cell);
+                cells.push(cell);
+                k++
+            }
+        }
+        //adding expansion to the board
+        function addEXP() {
+            boardSize++
+            boar.style.gridTemplateColumns += " auto"
+            board.textContent = ''
+            for (let i = 0; i < boardSize; i++) {
+                for (let j = 0; j < boardSize; j++) {
+                    boar.className = "board"
+                    let cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+                    cell.addEventListener('click', cellClick);
+                    board.appendChild(cell);
+                    cells.push(cell);
+                }
+            }
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        }
+        //reset board
+        function resetBoard() {
+            board.textContent = ''
+            board.id = "board"
+            board.class = "board"
+            boardSize = 3
+            boar.style.gridTemplateColumns = ""
+            for (i = 0; i < boardSize; i++) {
+                boar.style.gridTemplateColumns += " auto"
+            }
+            for (let i = 0; i < boardSize; i++) {
+                for (let j = 0; j < boardSize; j++) {
+                    boar.className = "board"
+                    let cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+                    cell.addEventListener('click', cellClick);
+                    board.appendChild(cell);
+                    cells.push(cell);
+                }
+            }
+            currentPlayer = 'X';
+        }
+
+        //checks to see if the grid box was clicked on, to place either x or o
+        function cellClick() {
+            if (this.textContent === '') {
+                this.textContent = currentPlayer;
+                if (checkWin(this.id, boardSize, currentPlayer)) {
+                    alert('Player ' + currentPlayer + ' wins!');
+                    resetBoard();
+                } else {
+                    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                }
+            }
+        }
+        //checks which player won X or O
+        function checkWin(id, size, p) {
+            let local = parseInt(id)
+            console.log(local)
+            let mx = document.getElementById(id).dataset.col
+            let my = document.getElementById(id).dataset.row
+            // equation example
+            // let rows = [
+            //     [mx, mx+1, mx+2],
+            //     [mx-1, mx, mx+1],
+            //     [mx-2, mx-1, mx]
+            // ]
+            // let cols = [
+            //     [my, my+1, my+2],
+            //     [my-1, my, my+2],
+            //     [my-2, my-1, my]
+            // ]
+            find(mx, my)
+            let soulutions = []
+            let a = []
+            let b = []
+            let c = []
+            let d = []
+            let i = 0;
+            for (p = -2; p < 3;) {
+                a[i] = find(parseInt(mx) + p, parseInt(my))
+                i++
+                p++
+            }
+            i = 0;
+            for (p = -2; p < 3;) {
+                b[i] = find(parseInt(mx), parseInt(my) - p)
+                i++
+                p++
+            }
+            i = 0;
+            for (p = -2; p < 3;) {
+                c[i] = find(parseInt(mx) + p, parseInt(my) - p)
+                i++
+                p++
+            }
+            i = 0;
+            for (p = -2; p < 3;) {
+                d[i] = find(parseInt(mx) + p, parseInt(my) + p)
+                i++
+                p++
+            }
+            console.log(a)
+            console.log(b)
+            console.log(c)
+            console.log(d)
+            let check = 0
+            for (k = 0; k < a.length; k++) {
+                if (a[k] == 'cant find me') {
+                    continue
+                }
+                else if (!document.getElementById(a[k]).textContent == p) {
+                    check = 0;
+                    break
+                } else {
+                    check++
+                    if (check == 3) {
+                        return true
+                    }
+                    else {
+                        return false
+                    }
+                }
+            }
+            for (k = 0; k < b.length; k++) {
+                if (a[k] == "cant find me") {
+                    continue
+                }
+                else if (!document.getElementById(a[k]).textContent == p) {
+                    check = 0;
+                    break
+                } else {
+                    check++
+                    if (check == 3) {
+                        return true
+                    }
+                    else {
+                        return false
+                    }
+                }
+            }
+            for (k = 0; k < c.length; k++) {
+                if (a[k] == 'cant find me') {
+                    continue
+                }
+                else if (!document.getElementById(a[k]).textContent == p) {
+                    check = 0;
+                    break
+                } else {
+                    check++
+                    if (check == 3) {
+                        return true
+                    }
+                    else {
+                        return false
+                    }
+                }
+            }
+            for (k = 0; k < d.length; k++) {
+                if (a[k] == 'cant find me') {
+                    continue
+                }
+                else if (!document.getElementById(a[k]).textContent == p) {
+                    check = 0;
+                    break
+                } else {
+                    check++
+                    if (check == 3) {
+                        return true
+                    }
+                    else {
+                        return false
+                    }
+                }
+            }
+        }
+        //finds all type of wins 
+        function find(x, y) {
+            for (i = 0; i < boardSize * boardSize; i++) {
+                let cel = document.getElementById(i);
+                if (cel.dataset.col == x && cel.dataset.row == y) {
+                    return i
+                    break
+                }
+            }
+            return 'cant find me'
+        }
+    // function getWinningCombinations() {
+    //     let combinations = [];
+    //     // Rows
+    //     for (let i = 0; i < boardSize; i++) {
+    //         for (let j = 0; j <= boardSize - 3; j++) {
+    //             let combination = [];
+    //             for (let k = 0; k < 3; k++) {
+    //                 combination.push(i * boardSize + j + k);
+    //             }
+    //             combinations.push(combination); //whats this?
+    //         }
+    //     }
+    //     // Columns
+    //     for (let i = 0; i <= boardSize - 3; i++) {
+    //         for (let j = 0; j < boardSize; j++) {
+    //             let combination = [];
+    //             for (let k = 0; k < 3; k++) {
+    //                 combination.push((i + k) * boardSize + j);
+    //             }
+    //             combinations.push(combination);
+    //         }
+    //     }
+    //     // Diagonals
+    //     for (let i = 0; i <= boardSize - 3; i++) {
+    //         for (let j = 0; j <= boardSize - 3; j++) {
+    //             let combination1 = [];
+    //             let combination2 = [];
+    //             for (let k = 0; k < 3; k++) {
+    //                 combination1.push((i + k) * boardSize + j + k);
+    //                 combination2.push((i + k) * boardSize + j + 2 - k);
+    //             }
+    //             combinations.push(combination1, combination2);
+    //         }
+    //     }
+    //     return combinations;
+    // }
+    // function addRight() {
+    //     boar.style.gridTemplateColumns += " auto"
+    //     let drop = false
+    //     for (i = 0; i < boardSize; i++){
+    //         let cell = document.createElement('div');
+    //         cell.classList.add('cell');
+    //         cell.dataset.row = hei;
+    //         cell.dataset.col = wid;
+    //         cell.addEventListener('click', cellClick);
+    //         board.appendChild(cell);
+    //         cells.push(cell);
+    //     }
+    //     for (i = 0; i < cells.length; i++){
+    //         let drops = 0
+    //         if (cells[i].dataset.col/(wid-1) == 1 && drops == 0){
+    //             drop = true
+    //         }
+    //         if (drop){
+    //             cells[i].dataset.row = drops
+    //             cells[i].dataset.col = wid
+    //             drop = false
+    //             drops += 1
+    //             for (j = i; j < cells.length; j++) {
+    //                 cells[j].dataset.row = drops
+    //                 cells[j].dataset.row = (wid-1) % j
+    //             }
+    //         }
+    //     }
+    //     wid+1
+    // }
+    </script>
+</body>
+
+</html>
