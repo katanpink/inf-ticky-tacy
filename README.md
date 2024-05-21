@@ -24,6 +24,7 @@ Infinite Tic Tac Toe is a dynamic twist on the classic Tic Tac Toe game where pl
 ### Board Expansion
 - When hitting the exapnd button, it exponentially increases the board both by rows and column.
 - The expansion does count as a turn, And YES both players can use the expand move as a turn.
+- If a player uses expansion as a turn, the other player wont be allowed to place an X or O to win the game, why? its funny
 
 ### Block Moves
 
