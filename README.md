@@ -41,13 +41,6 @@ Infinite Tic Tac Toe is a dynamic twist on the classic Tic Tac Toe game where pl
 
 - Block moves are limited to preventing the opponent's immediate win and should not be used excessively to prolong the game unfairly.
 
-## Setup
-
-### Prerequisites
-
-- Python 3.x installed on your system.
-- Optional: A virtual environment for Python dependencies.
-
 ### Installation
 
 1. Clone the repository:
