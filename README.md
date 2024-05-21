@@ -32,7 +32,7 @@ Infinite Tic Tac Toe is a dynamic twist on the classic Tic Tac Toe game where pl
 - A block move allows a player to block an opponent's potential winning move.
 - Using a block move grants the player an additional turn.
 - Block moves cannot be used to directly create a winning line for the blocking player.
-- If a block move results in a potential win for the blocking player, the move is invalid and must be redone.
+- Block moves will not allow the player to place on a cell that would allow them to win, thus preventing them from using the block moves to win.
 
 ### Restrictions on Block Moves
 
