@@ -7,14 +7,11 @@ Infinite Tic Tac Toe is a dynamic twist on the classic Tic Tac Toe game where pl
 ## Table of Contents
 
 1. [Game Rules](#game-rules)
-2. [Setup](#setup)
-3. [Gameplay](#gameplay)
+2. [Gameplay](#gameplay)
    - [Basic Moves](#basic-moves)
    - [Block Moves](#block-moves)
    - [Winning the Game](#winning-the-game)
-4. [Technical Details](#technical-details)
-5. [Contributing](#contributing)
-6. [License](#license)
+3. [Technical Details](#technical-details)
 
 ## Game Rules
 
@@ -45,5 +42,4 @@ Infinite Tic Tac Toe is a dynamic twist on the classic Tic Tac Toe game where pl
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/infinite-tic-tac-toe.git
-   cd infinite-tic-tac-toe
+   git clone [https://github.com/yourusername/infinite-tic-tac-toe.git](https://github.com/katanpink/inf-ticky-tacy)
