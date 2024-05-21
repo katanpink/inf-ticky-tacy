@@ -23,13 +23,14 @@ Infinite Tic Tac Toe is a dynamic twist on the classic Tic Tac Toe game where pl
 
 ### Board Expansion
 - When hitting the exapnd button, it exponentially increases the board both by rows and column.
-- The expansion does count as a turn.
+- The expansion does count as a turn, And YES both players can use the expand move as a turn.
 
 ### Block Moves
 
 - A block move allows a player to block an opponent's potential winning move.
 - Using a block move grants the player an additional turn.
 - Block moves cannot be used to directly create a winning line for the blocking player.
+- Both players can use this function.
 
 
 ### Installation
