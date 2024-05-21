@@ -37,4 +37,4 @@ Infinite Tic Tac Toe is a dynamic twist on the classic Tic Tac Toe game where pl
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/infinite-tic-tac-toe.git](https://github.com/katanpink/inf-ticky-tacy)
+   git clone https://github.com/katanpink/inf-ticky-tacy.git
