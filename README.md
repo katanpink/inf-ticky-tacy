@@ -11,7 +11,6 @@ Infinite Tic Tac Toe is a dynamic twist on the classic Tic Tac Toe game where pl
    - [Basic Moves](#basic-moves)
    - [Block Moves](#block-moves)
    - [Winning the Game](#winning-the-game)
-3. [Technical Details](#technical-details)
 
 ## Game Rules
 
