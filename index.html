@@ -30,6 +30,7 @@
 
 <body id="body">
     <h1>Tic Tac Toe</h1>
+    <h2 id="tracker"></h2>
     <button onclick="resetBoard()">reset</button>
     <button onclick="addEXP()">expand</button>
     <script>
@@ -39,6 +40,7 @@
         let cells = [];
         let wid = boardSize
         let hei = boardSize
+        let blocked = false
 
         // Create the board
         let boar = document.createElement('div');
@@ -64,8 +66,34 @@
                 k++
             }
         }
+        //board read
+        function readit() {
+            let u = 0;
+            let y = [];
+            for (let i = 0; i < boardSize; i++) {
+                for (let j = 0; j < boardSize; j++) {
+                    if (!document.getElementById(u).textContent == ''){
+                        y[u] = document.getElementById(u).textContent
+                    } else {
+                        y[u] = "empty"
+                    }
+                    u++
+                }
+            }
+            return y
+        }
         //adding expansion to the board
         function addEXP() {
+            blocked = false
+            k = 0
+            y = readit()
+            let w = 0
+            console.log(y)
+            for (i = 1; i <= boardSize; i++) {
+                y.splice((boardSize * i) + w, 0, "empty")
+                w++
+            }
+            console.log(y)
             boardSize++
             boar.style.gridTemplateColumns += " auto"
             board.textContent = ''
@@ -76,15 +104,23 @@
                     cell.classList.add('cell');
                     cell.dataset.row = i;
                     cell.dataset.col = j;
+                    cell.id = k
+                    if (y[k] == "empty") {
+                        console.log("nuffin at " + k)
+                    } else {
+                        cell.textContent = y[k]
+                    }
                     cell.addEventListener('click', cellClick);
                     board.appendChild(cell);
                     cells.push(cell);
+                    k++
                 }
             }
             currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
         }
         //reset board
         function resetBoard() {
+            k = 0 
             board.textContent = ''
             board.id = "board"
             board.class = "board"
@@ -100,9 +136,11 @@
                     cell.classList.add('cell');
                     cell.dataset.row = i;
                     cell.dataset.col = j;
+                    cell.id = k
                     cell.addEventListener('click', cellClick);
                     board.appendChild(cell);
                     cells.push(cell);
+                    k++
                 }
             }
             currentPlayer = 'X';
@@ -113,15 +151,153 @@
             if (this.textContent === '') {
                 this.textContent = currentPlayer;
                 if (checkWin(this.id, boardSize, currentPlayer)) {
-                    alert('Player ' + currentPlayer + ' wins!');
-                    resetBoard();
-                } else {
+                    if (blocked){
+                        this.textContent = ''
+                        currentPlayer = currentPlayer === 'X' ? 'X' : 'O'
+                    }else{
+                        alert('Player ' + currentPlayer + ' wins!');
+                        resetBoard();
+                    }
+                } else if (checkBlock(this.id, boardSize, currentPlayer)){
+                    currentPlayer = currentPlayer === 'X' ? 'X' : 'O'
+                    blocked = true
+                }
+                else {
+                    blocked = false
                     currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
                 }
             }
+            document.getElementById("tracker").textContent = "Current Player is: " + currentPlayer
         }
-        //checks which player won X or O
-        function checkWin(id, size, p) {
+        //checks who won X or O based off which instance they placed
+        function checkWin(id, size, player) {
+            let local = parseInt(id)
+            console.log(local)
+            let mx = document.getElementById(id).dataset.col
+            let my = document.getElementById(id).dataset.row
+            // equation example
+            // let rows = [
+            //     [mx, mx+1, mx+2],
+            //     [mx-1, mx, mx+1],
+            //     [mx-2, mx-1, mx]
+            // ]
+            // let cols = [
+            //     [my, my+1, my+2],
+            //     [my-1, my, my+2],
+            //     [my-2, my-1, my]
+            // ]
+            find(mx, my)
+            let soulutions = []
+            let a = []
+            let b = []
+            let c = []
+            let d = []
+            let i = 0;
+            for (p = -2; p < 3;) {
+                a[i] = find(parseInt(mx) + p, parseInt(my))
+                i++
+                p++
+            }
+            i = 0;
+            for (p = -2; p < 3;) {
+                b[i] = find(parseInt(mx), parseInt(my) - p)
+                i++
+                p++
+            }
+            i = 0;
+            for (p = -2; p < 3;) {
+                c[i] = find(parseInt(mx) + p, parseInt(my) - p)
+                i++
+                p++
+            }
+            i = 0;
+            for (p = -2; p < 3;) {
+                d[i] = find(parseInt(mx) + p, parseInt(my) + p)
+                i++
+                p++
+            }
+            let check = 0
+            //row check
+            for (k = 0; k < a.length; k++) {
+                console.log(player)
+                if (a[k] == 'cant find me') {
+                    console.log("nah")
+                    continue
+                }
+                else if (!document.getElementById(a[k]).textContent == player) {
+                    check = 0;
+                    console.log("nah blocked")
+                    break
+                } else if (document.getElementById(a[k]).textContent == player) {
+                    check++
+                    console.log("connect")
+                    if (check == 3) {
+                        return true
+                    }
+                }
+            }
+            check = 0
+            // checks columns
+            for (k = 0; k < b.length; k++) {
+                console.log(player)
+                if (b[k] == 'cant find me') {
+                    console.log("nah")
+                    continue
+                }
+                else if (!document.getElementById(b[k]).textContent == player) {
+                    check = 0;
+                    console.log("nah blocked")
+                    break
+                } else if (document.getElementById(b[k]).textContent == player) {
+                    check++
+                    console.log("connect")
+                    if (check == 3) {
+                        return true
+                    }
+                }
+            }
+            check = 0
+            //checks for positive diaganols
+            for (k = 0; k < c.length; k++) {
+                console.log(player)
+                if (c[k] == 'cant find me') {
+                    console.log("nah")
+                    continue
+                }
+                else if (!document.getElementById(c[k]).textContent == player) {
+                    check = 0;
+                    console.log("nah blocked")
+                    break
+                } else if (document.getElementById(c[k]).textContent == player) {
+                    check++
+                    console.log("connect")
+                    if (check == 3) {
+                        return true
+                    }
+                }
+            }
+            check = 0
+            //checks for negative diaganols
+            for (k = 0; k < d.length; k++) {
+                console.log(player)
+                if (d[k] == 'cant find me') {
+                    console.log("nah")
+                    continue
+                }
+                else if (!document.getElementById(d[k]).textContent == player) {
+                    check = 0;
+                    console.log("nah blocked")
+                    break
+                } else if (document.getElementById(d[k]).textContent == player) {
+                    check++
+                    console.log("connect")
+                    if (check == 3) {
+                        return true
+                    }
+                }
+            }
+        }
+        function checkBlock(id, size, player) {
             let local = parseInt(id)
             console.log(local)
             let mx = document.getElementById(id).dataset.col
@@ -172,74 +348,66 @@
             console.log(c)
             console.log(d)
             let check = 0
+            let opp = ""
+            if (player == "X"){
+                opp = "O"
+            }else{
+                opp = "X"
+            }
+            console.log(opp)
+            console.log(player)
+            //row check
             for (k = 0; k < a.length; k++) {
+                console.log(player)
                 if (a[k] == 'cant find me') {
                     continue
-                }
-                else if (!document.getElementById(a[k]).textContent == p) {
-                    check = 0;
-                    break
-                } else {
+                } else if (document.getElementById(a[k]).textContent == opp) {
                     check++
-                    if (check == 3) {
+                    if (check >= 2) {
                         return true
-                    }
-                    else {
-                        return false
                     }
                 }
             }
+            check = 0
+            //row check
             for (k = 0; k < b.length; k++) {
-                if (a[k] == "cant find me") {
+                console.log(player)
+                if (b[k] == 'cant find me') {
                     continue
-                }
-                else if (!document.getElementById(a[k]).textContent == p) {
-                    check = 0;
-                    break
-                } else {
+                } else if (document.getElementById(b[k]).textContent == opp) {
                     check++
-                    if (check == 3) {
+                    if (check >= 2) {
                         return true
-                    }
-                    else {
-                        return false
                     }
                 }
             }
+            check = 0
+            //row check
             for (k = 0; k < c.length; k++) {
-                if (a[k] == 'cant find me') {
+                console.log(player)
+                if (c[k] == 'cant find me') {
                     continue
-                }
-                else if (!document.getElementById(a[k]).textContent == p) {
-                    check = 0;
-                    break
-                } else {
+                } else if (document.getElementById(c[k]).textContent == opp) {
                     check++
-                    if (check == 3) {
+                    if (check >= 2) {
                         return true
-                    }
-                    else {
-                        return false
                     }
                 }
             }
+            check = 0
+            //row check
             for (k = 0; k < d.length; k++) {
-                if (a[k] == 'cant find me') {
+                console.log(player)
+                if (d[k] == 'cant find me') {
                     continue
-                }
-                else if (!document.getElementById(a[k]).textContent == p) {
-                    check = 0;
-                    break
-                } else {
+                } else if (document.getElementById(d[k]).textContent == opp) {
                     check++
-                    if (check == 3) {
+                    if (check >= 2) {
                         return true
-                    }
-                    else {
-                        return false
                     }
                 }
             }
+            check = 0
         }
         //finds all type of wins 
         function find(x, y) {
