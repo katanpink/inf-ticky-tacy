@@ -23,23 +23,18 @@ Infinite Tic Tac Toe is a dynamic twist on the classic Tic Tac Toe game where pl
 - To win, a player must align a specified number of their symbols (e.g., 3 in a row for classic, or a larger number for bigger boards).
 
 ### Board Expansion
-
-- Players can expand the board by one row or column in any direction on their turn, except when using a block move.
-- The expansion does not count as a turn. Players still need to place their symbol after expanding the board.
+- When hitting the exapnd button, it exponentially increases the board both by rows and column.
+- The expansion does count as a turn.
 
 ### Block Moves
 
 - A block move allows a player to block an opponent's potential winning move.
 - Using a block move grants the player an additional turn.
 - Block moves cannot be used to directly create a winning line for the blocking player.
-- Block moves will not allow the player to place on a cell that would allow them to win, thus preventing them from using the block moves to win.
 
-### Restrictions on Block Moves
-
-- Block moves are limited to preventing the opponent's immediate win and should not be used excessively to prolong the game unfairly.
 
 ### Installation
 
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/yourusername/infinite-tic-tac-toe.git](https://github.com/katanpink/inf-ticky-tacy)
+   git clone https://github.com/yourusername/infinite-tic-tac-toe.git](https://github.com/katanpink/inf-ticky-tacy)
